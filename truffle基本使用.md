@@ -1,0 +1,140 @@
+#### 0 环境准备
+- Truffle v5.1.18 (core: 5.1.18)
+- Solidity v0.5.16 (solc-js)
+- Node v12.12.0
+- Web3.js v1.2.1
+- Ganache CLI v6.4.2 (ganache-core: 2.5.4)
+#### 1 新建helleworld-truffle  
+cd helleworld-truffle，初始化项目
+```
+trffule init
+```
+成功会显示
+```
+Starting unbox...
+=================
+
+✔ Preparing to download box
+✔ Downloading
+✔ cleaning up temporary files
+✔ Setting up box
+
+Unbox successful, sweet!
+```
+
+#### 2 新建合约文件
+在contract 目录下，新建Greeter.sol
+```
+pragma solidity >=0.4.25 <0.7.0;
+
+contract Greeter         
+{
+    address creator;     
+    string greeting;     
+
+    constructor(string memory _greeting) public //构造函数初始化  
+    {
+        creator = msg.sender;
+        greeting = _greeting;
+    }
+    
+
+    function greet() public view returns (string memory)           
+    {
+        return greeting;
+    }
+    
+    function setGreeting(string memory _newgreeting) public
+    {
+        greeting = _newgreeting;
+    }
+
+}
+```
+参数需要使用修饰符memory，不然会报错
+```
+TypeError: Data location must be "memory" for parameter in function, but none was given.
+```
+#### 3 编译
+```
+truffle compile
+
+```
+成功后会多一个build文件，json格式的abi文件。
+#### 4 部署
+##### 4.1 在migration下新建一个2_deploy_contracts.js，
+```
+var Greeter = artifacts.require("../contracts/Greeter.sol");
+
+module.exports = function(deployer) {
+  deployer.deploy(Greeter,"Hello, World!");//"参数在第二个变量携带"
+};
+```
+##### 4.2 启动本地测试节点
+```
+ganache-cli
+```
+会生成10对公私钥，coinbase默认是第一个，默认端口8545
+##### 4.3 修改配置
+truffle-config.js，指定networks
+```
+networks: {
+development: {
+     host: "127.0.0.1",     // Localhost (default: none)
+     port: 8545,            // Standard Ethereum port (default: none)
+     network_id: "*",       // Any network (default: none)
+    },
+    ...
+```
+##### 4.4 执行部署
+```
+truffle migrate
+...
+2_deploy_contracts.js
+=====================
+
+   Deploying 'Greeter'
+   -------------------
+   > transaction hash:    0x125053442f96fd65ce241b8011d4417acc40b6b488262d434c66bb38e9d98c07
+   > Blocks: 0            Seconds: 0
+   > contract address:    0xD1B4B23515052D353e780b102f3998F307cBb799
+...
+```
+打印出上面的信息表示成功。
+同时可以查看ganache打印的相关信息。
+```
+ Transaction: 0x125053442f96fd65ce241b8011d4417acc40b6b488262d434c66bb38e9d98c07
+  Contract created: 0xd1b4b23515052d353e780b102f3998f307cbb799
+  Gas usage: 335756
+  Block Number: 3
+  Block Time: Thu Mar 26 2020 20:49:51 GMT+0800 (China Standard Time)
+```
+##### 5 与合约交互
+使用truffle的基本控制台,注意truffle的操作都是在helleworld-truffle目录下执行的。
+```
+truffle console
+truffle(development)>
+```
+直接输入Greeter，会显示一堆合约的信息。
+我们要调用greet方法，需要新创建一个合约的实例，
+当前版本的交互方式跟之前的不一样，世界变化太快...
+```
+truffle(development)> let instance = await Greeter.deployed()
+undefined
+truffle(development)> instance.greet()
+'Hello, World!'
+```
+我们在来试下setGreeting，
+```
+instance.setGreeting("hi,JOJO")
+{
+  tx: '0xa970944b7e759b4b56f7a861df9d57ea43270db7ec7cf4714d896b40d4845e8f',
+  ...
+```
+返回一个交易数据，查看下结果，
+```
+truffle(development)> instance.greet()
+'hi,JOJO'
+```
+#### 小结
+本文旨在通过一个helloworld的合约完成整个智能合约本地测试环境搭建，其中学习了truffle，ganache的基本使用，有了这些工具后，就可以独立开发与部署测试了。
