@@ -38,3 +38,8 @@ web3.eth.getBalance("0xDF3F6b7C21AAD62DAEf86Bd479907830B709189e")
 Error: Returned error: VM Exception while processing transaction
 ```
 所以不得不写一个提现的方法。
+0.5版本的address 分为两种一种是普通的address，一种是address payable
+官方文档解释
+```bash
+The address type was split into address and address payable, where only address payable provides the transfer function. An address payable can be directly converted to an address, but the other way around is not allowed. Converting address to address payable is possible via conversion through uint160. If c is a contract, address(c) results in address payable only if c has a payable fallback function. If you use the withdraw pattern, you most likely do not have to change your code because transfer is only used on msg.sender instead of stored addresses and msg.sender is an address payable.
+```
