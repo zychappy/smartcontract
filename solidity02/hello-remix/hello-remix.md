@@ -8,12 +8,15 @@ remix是以太坊官方推荐的智能合约开发IDE（集成开发环境），
 
 进入remix，我们可以看到最左边的菜单有三个按钮，分别对应文件（写代码的地方），编译（跑代码），部署（部署到链上）。我们点新建（Create
 New File）按钮，就可以创建一个空白的solidity合约。
+
 ![remix-1.png](remix-1.png)
 
 ## 2 新建合约 HelloWeb3.sol
 
 选择文件夹，然后单击"create new file" 或者直接文件夹右击创建。
+
 ![img.png](remix-2.png)
+
 合约代码
 
 ```solidity
