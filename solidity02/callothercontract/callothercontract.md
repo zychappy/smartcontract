@@ -35,3 +35,16 @@
 
 首先copy待调用合约地址，然后在setX方法输入相关参数，然后点击transact
 ![img.png](call4.png)
+执行debug日志显示很详细。
+![img.png](call5.png)
+刚才通过调用合约将x的设置为123，现在同样通过调用合约，查看x的value。
+![img.png](call6.png)
+最后尝试调用合约，并发送eth，发送了10个eth。
+![img.png](call7.png)
+回到被调用合约，通过getBalance查看，可以看到eth到账，x也被修改为321.
+![img_1.png](call8.png)
+
+## 小结
+
+本文主要介绍了如何在合约里调用其他合约，其中用了几个修饰器（modifier）关键字：
+external 表示外部可调用，payable表示可接受转账，view表示只读。
