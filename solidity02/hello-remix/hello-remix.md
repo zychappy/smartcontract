@@ -28,10 +28,14 @@ contract HelloWeb3 {
 ## 3 compile && deploy
 
 ![remix-3.png](remix-3.png)
+
 编译成功后，单击 部署按钮，即可以看得到待部署合约。
+
 ![img.png](remix-4.png)
+
 部署成功后，即可看到public变量，右边栏是一些debug信息，
 点击echo，显示他的value，且日志也有相关打印信息。
+
 ![img.png](remix-5.png)
 
 ## 总结
